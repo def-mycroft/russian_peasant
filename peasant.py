@@ -12,35 +12,30 @@ I wrote a function while working on proving Russian Peasant Multiplication.
 
 
 """
-def generate_columns(number_1, number_2, length=500):
+def generate_columns(number_1, number_2):
     """Generates the two columns using an index"""
-    index = [2]
     left_side = [number_1]
     right_side = [number_2]
+    index = 2 # Start the index at 2.
+    stop_flag = False
 
-    # The index is a list of integers with each member being twice the 
-    # previous member.
-    for i in range(1,length):
-        # This index would need to be larger for operations involving
-        # larger numbers.
-        n = index[i-1] * 2
-        index.append(n)
-
-    for i in range(len(index)):
+    while not stop_flag:
         # Divide the first number by the index member and return floor.
-        x = int(number_1 / index[i])
+        x = int(number_1 / index)
         left_side.append(int(x))
         # Append the second number times the index member.
-        right_side.append((index[i] * number_2))
+        right_side.append((index * number_2))
+
+        index *= 2
 
         # Stop when the left side reaches 1.
         if x <= 1:
-            break
+            stop_flag = True
 
     return left_side, right_side
 
 
-def peasant(number_1, number_2, length=500, verbose=False):
+def peasant(number_1, number_2, verbose=False):
     """Removes values from the right side where the left is even"""
     left_side, right_side = generate_columns(number_1, number_2)
 
