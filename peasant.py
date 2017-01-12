@@ -16,16 +16,16 @@ def generate_columns(number_1, number_2):
     """Generates the two columns using an index"""
     left_side = [number_1]
     right_side = [number_2]
-    remainder = ['NA']
+    remainder_bool = []
     index = 2 # Start the index at 2.
     stop_flag = False
 
     while not stop_flag:
         # Divide the first number by the index member and return floor.
         x = int(number_1 / index)
-        y = number_1 % index
+
         left_side.append(int(x))
-        remainder.append(y)
+
         # Append the second number times the index member.
         right_side.append((index * number_2))
 
@@ -35,12 +35,18 @@ def generate_columns(number_1, number_2):
         if x <= 1:
             stop_flag = True
 
-    return left_side, right_side, remainder
+    for i in range(len(left_side)):
+        if left_side[i] % 2 == 0:
+            remainder_bool.append(0)
+        else:
+            remainder_bool.append(1)
+
+    return left_side, right_side, remainder_bool
 
 
 def peasant(number_1, number_2, verbose=False):
     """Removes values from the right side where the left is even"""
-    left_side, right_side, remainder = generate_columns(number_1, number_2)
+    left_side, right_side, remainder_bool = generate_columns(number_1, number_2)
 
     subtract_values = []
 
@@ -54,9 +60,16 @@ def peasant(number_1, number_2, verbose=False):
         return sum(right_side) - sum(subtract_values)
 
     else:
+        string = ''
+        for i in remainder_bool:
+            string = string + str(i)
+        string = string[::-1]
+        print('binary: %s decimal: %s' % (string, int(string, 2)))
+        check = number_1 == int(string, 2)
+        print('remainder bool == number_1: %s' % check)
         answer = sum(right_side) - sum(subtract_values) 
         #left_side, right_side, subtract_values
         print('answer: %s' % answer)
         print('columns:')
         for i in range(len(left_side)):
-            print('%s    %s    %s' % (left_side[i], right_side[i], remainder[i]))
+            print('%s    %s    %s' % (left_side[i], right_side[i], remainder_bool[i]))
