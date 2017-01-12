@@ -12,6 +12,23 @@ I wrote a function while working on proving Russian Peasant Multiplication.
 
 
 """
+def peasant_v2(number_1, number_2):
+    """The most concise implementation of RPM I've create so far"""
+    column = [number_1]
+    index = 2
+    answer = 0
+
+    while int(number_1 / index) != 1:
+        column.append(int(number_1 / index))
+        index *= 2
+
+    for i in column:
+        if i % 2 != 0:
+            answer += number_2 * (2 ** column.index(i))
+
+    return answer
+
+
 def generate_columns(number_1, number_2):
     """Generates the two columns using an index"""
     left_side = [number_1]
@@ -44,6 +61,7 @@ def generate_columns(number_1, number_2):
     return left_side, right_side, remainder_bool
 
 
+
 def peasant(number_1, number_2, verbose=False):
     """Removes values from the right side where the left is even"""
     left_side, right_side, remainder_bool = generate_columns(number_1, number_2)
@@ -67,6 +85,7 @@ def peasant(number_1, number_2, verbose=False):
         print('binary: %s decimal: %s' % (string, int(string, 2)))
         check = number_1 == int(string, 2)
         print('remainder bool == number_1: %s' % check)
+        print(subtract_values)
         answer = sum(right_side) - sum(subtract_values) 
         #left_side, right_side, subtract_values
         print('answer: %s' % answer)
